@@ -86,6 +86,10 @@ module.exports = {
     },
     operation: {
       inputFields: [
+        { key: 'Username', label: 'Username' },
+        { key: 'realname', label: 'Real Name' },
+        { key: 'NonI18NFirstName', label: 'First Name' },
+        { key: 'NonI18NLastName', label: 'Last Name' },
         {key: 'name', required: true}
       ],
       perform: performCreate
@@ -97,8 +101,8 @@ module.exports = {
   // returned records, and have obvious placeholder values that we can show to any user.
   // In this resource, the sample is reused across all methods
   sample: {
-    id: 1,
-    name: 'Test'
+    ID: 1,
+    Username: 'Test'
   },
 
   // If fields are custom to each user (like spreadsheet columns), `outputFields` can create human labels
