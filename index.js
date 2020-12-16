@@ -1,4 +1,3 @@
-const contactResource = require("./resources/contact");
 const user = require("./triggers/user");
 
 const userResource = require("./resources/user");
@@ -44,7 +43,6 @@ module.exports = {
   creates: {},
 
   resources: {
-    [contactResource.key]: contactResource,
     [userResource.key]: userResource
   },
 };
