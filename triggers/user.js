@@ -1,37 +1,52 @@
-const performSubscribe = async (z, bundle)  => {
-    z.console.log('PERFORM SUBSCRIBE:');
-    z.console.log(JSON.stringify(bundle, null, 3));
-    return Promise.resolve({
-        bundle,
-        subscribed: true
-    });
+const { triggers, users } = require('../config/endpoints');
+const { headers } = require('../config/request');
+const { UserCreated } = require('../config/types');
+
+const performSubscribe = {
+    method: 'POST',
+    url: `{{bundle.authData.site}}${triggers.user.created}`,
+    headers,
+    body: {
+        target: '{{bundle.targetUrl}}'
+    }
 }
 
-const performUnsubscribe = async (z, bundle)  => {
-    z.console.log('PERFORM UNSUBSCRIBE:');
-    z.console.log(JSON.stringify(bundle, null, 3));
-    return Promise.resolve({
-        bundle,
-        unsubscribed: true
-    });
+const performUnsubscribe = {
+    method: 'DELETE',
+    url: '{{bundle.authData.site}}{{bundle.subscribeData.href}}',
+    headers,
 }
 
 const perform = (z, bundle) => {
     z.console.log('PERFORM:');
     z.console.log(JSON.stringify(bundle, null, 3));
     return [{
-        ...bundle.cleanedRequest
+        ...bundle.cleanedRequest.data
     }];
 }
 
-const performList = (z, bundle) => {
+const performList = async (z, bundle) => {
+    const result = await z.request({
+        method: 'GET',
+        url: `{{bundle.authData.site}}${users}/{{bundle.authData.username}}`,
+        headers,
+    });
+
+    const {
+        CreatedTime,
+        email,
+        realname: name,
+        lastLoginTime: last_login,
+        Username: username,
+    } = result.data;
+
     return [{
-        ID: "123",
-        NonI18NFirstName: "John",
-        NonI18NLastName: "Smith",
-        Username: "johnsmith",
-        realname: "John Smith",
-    }]
+        CreatedTime,
+        email,
+        last_login,
+        name,
+        username,
+    }];
 }
 
 module.exports = {
@@ -40,7 +55,7 @@ module.exports = {
 
     display: {
         label: 'New User',
-        description: 'Triggers when a new user account is created.'
+        description: 'Triggered when a new user account is created.'
     },
 
     operation: {
@@ -52,19 +67,19 @@ module.exports = {
         performUnsubscribe,
 
         sample: {
-            ID: "123",
-            NonI18NFirstName: "John",
-            NonI18NLastName: "Smith",
-            Username: "johnsmith",
-            realname: "John Smith",
+            "CreatedTime": "2020-12-16T17:57:26Z",
+            "email": "john.smith@somedomain.com",
+            "last_login": "1608141448.001122",
+            "name": "John Smith",
+            "username": "johnsmith"
         },
 
         outputFields: [
-            { key: 'ID', label: 'ID', type: "integer" },
-            { key: 'Username', label: 'Username' },
-            { key: 'realname', label: 'Real Name' },
-            { key: 'NonI18NFirstName', label: 'First Name' },
-            { key: 'NonI18NLastName', label: 'Last Name' },
+            { key: 'CreatedTime', label: 'Created Time' },
+            { key: 'last_login', label: 'Last Log In' },
+            { key: 'email', label: 'email' },
+            { key: 'username', label: 'Username' },
+            { key: 'name', label: 'Name' },
         ]
     }
 }
