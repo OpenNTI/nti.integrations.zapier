@@ -1,7 +1,7 @@
 {
   "name": "nti.integrations.zapier",
   "version": "1.0.0",
-  "description": "",
+  "description": "NextThought is a learning platform designed with a straightforward, team-based approach.",
   "main": "index.js",
   "scripts": {
     "test": "jest --testTimeout 10000"
