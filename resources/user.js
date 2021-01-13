@@ -69,7 +69,7 @@ module.exports = {
   search: {
     display: {
       label: 'Find User',
-      description: 'Finds a user give.'
+      description: 'Finds a user.'
     },
     operation: {
       inputFields: [
