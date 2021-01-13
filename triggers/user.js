@@ -1,4 +1,4 @@
-const { triggers, users } = require('../config/endpoints');
+const { triggers, users, resolveMe } = require('../config/endpoints');
 const { headers } = require('../config/request');
 const { UserCreated } = require('../config/types');
 
@@ -21,31 +21,31 @@ const perform = (z, bundle) => {
     z.console.log('PERFORM:');
     z.console.log(JSON.stringify(bundle, null, 3));
     return [{
-        ...bundle.cleanedRequest.data
+        ...bundle.cleanedRequest.Data
     }];
 }
 
 const performList = async (z, bundle) => {
     const result = await z.request({
         method: 'GET',
-        url: `{{bundle.authData.site}}${users}/{{bundle.authData.username}}`,
+        url: `${bundle.authData.site}${resolveMe}`,
         headers,
     });
 
     const {
         CreatedTime,
-        email,
-        realname: name,
-        lastLoginTime: last_login,
-        Username: username,
+        Email,
+        LastLogin,
+        Realname,
+        Username,
     } = result.data;
 
     return [{
         CreatedTime,
-        email,
-        last_login,
-        name,
-        username,
+        Email,
+        LastLogin,
+        Realname,
+        Username,
     }];
 }
 
@@ -68,18 +68,18 @@ module.exports = {
 
         sample: {
             "CreatedTime": "2020-12-16T17:57:26Z",
-            "email": "john.smith@somedomain.com",
-            "last_login": "1608141448.001122",
-            "name": "John Smith",
-            "username": "johnsmith"
+            "Email": "john.smith@somedomain.com",
+            "LastLogin": "2021-01-13T16:05:23Z",
+            "Realname": "John Smith",
+            "Username": "johnsmith"
         },
 
         outputFields: [
             { key: 'CreatedTime', label: 'Created Time' },
-            { key: 'last_login', label: 'Last Log In' },
-            { key: 'email', label: 'email' },
-            { key: 'username', label: 'Username' },
-            { key: 'name', label: 'Name' },
+            { key: 'LastLogin', label: 'Last Log In' },
+            { key: 'Email', label: 'email' },
+            { key: 'Username', label: 'Username' },
+            { key: 'Realname', label: 'Name' },
         ]
     }
 }
