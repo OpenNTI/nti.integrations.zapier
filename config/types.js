@@ -1,12 +1,15 @@
 const events = {
-    created: 'created'
+    created: 'created',
+    enolled: 'enolled',
+    completed: 'completed',
 };
 
 const objects = {
-    user: 'user'
+    user: 'user',
+    course: 'course',
 };
 
 module.exports = {
     events,
     objects
-}
+};

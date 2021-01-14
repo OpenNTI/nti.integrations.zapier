@@ -1,6 +1,5 @@
-const { triggers, users, resolveMe } = require('../config/endpoints');
+const { triggers, resolveMe } = require('../config/endpoints');
 const { headers } = require('../config/request');
-const { UserCreated } = require('../config/types');
 
 const performSubscribe = {
     method: 'POST',
@@ -9,13 +8,13 @@ const performSubscribe = {
     body: {
         target: '{{bundle.targetUrl}}'
     }
-}
+};
 
 const performUnsubscribe = {
     method: 'DELETE',
     url: '{{bundle.authData.site}}{{bundle.subscribeData.href}}',
     headers,
-}
+};
 
 const perform = (z, bundle) => {
     z.console.log('PERFORM:');
@@ -23,7 +22,7 @@ const perform = (z, bundle) => {
     return [{
         ...bundle.cleanedRequest.Data
     }];
-}
+};
 
 const performList = async (z, bundle) => {
     const result = await z.request({
@@ -47,7 +46,7 @@ const performList = async (z, bundle) => {
         Realname,
         Username,
     }];
-}
+};
 
 module.exports = {
     key: 'user',
@@ -55,7 +54,7 @@ module.exports = {
 
     display: {
         label: 'New User',
-        description: 'Triggered when a new user account is created.'
+        description: 'Triggers when a new user account is created.'
     },
 
     operation: {
@@ -67,11 +66,11 @@ module.exports = {
         performUnsubscribe,
 
         sample: {
-            "CreatedTime": "2020-12-16T17:57:26Z",
-            "Email": "john.smith@somedomain.com",
-            "LastLogin": "2021-01-13T16:05:23Z",
-            "Realname": "John Smith",
-            "Username": "johnsmith"
+            'CreatedTime': '2020-12-16T17:57:26Z',
+            'Email': 'john.smith@somedomain.com',
+            'LastLogin': '2021-01-13T16:05:23Z',
+            'Realname': 'John Smith',
+            'Username': 'johnsmith'
         },
 
         outputFields: [
@@ -82,4 +81,4 @@ module.exports = {
             { key: 'Realname', label: 'Name' },
         ]
     }
-}
+};

@@ -22,14 +22,15 @@ const resolveMe = e`/zapier/resolve_me`;
 */
 const triggers = Object.entries(objects).reduce((acc, [type, path]) => ({
     ...acc,
-    [type]: Object.entries(events).reduce((bcc, [event, path]) => ({
+    [type]: Object.entries(events).reduce((bcc, [event, eventPath]) => ({
         ...bcc,
-        [event]: `${subscribe}/${type}/${path}`
+        [event]: `${subscribe}/${path}/${eventPath}`
     }), {})
 }), {});
 
 module.exports = {
     triggers,
     users,
-    resolveMe
+    resolveMe,
+    getSubscriptionPath: (objectType, event) => `${subscribe}/${objectType}/${event}`
 };
