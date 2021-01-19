@@ -1,30 +1,42 @@
+const { fetchLink } = require('../utils/workspace');
+const { headers } = require('../config/request');
+const { triggers } = require('../config/endpoints');
+
 // get a list of users
-const performList = async (z) => {
-    const response = await z.request({
-        url: 'https://jsonplaceholder.typicode.com/posts',
-        params: {
-            order_by: 'id desc'
-        }
-    });
-    return response.data;
+const performList = async (z, bundle) => {
+    const response = await fetchLink('resolve_me', z, bundle);
+
+    const {
+        CreatedTime,
+        Email,
+        LastLogin,
+        Realname,
+        Username,
+    } = response.data;
+
+    return [{
+        CreatedTime,
+        Email,
+        LastLogin,
+        Realname,
+        Username,
+    }];
 };
 
 // find a particular user by name (or other search criteria)
 const performSearch = async (z, bundle) => {
-    const response = await z.request({
-        url: 'https://jsonplaceholder.typicode.com/posts',
+    const response = await fetchLink('user_search', z, bundle, {
         params: {
             name: bundle.inputData.name
         }
     });
+
     return response.data;
 };
 
 // creates a new user
 const performCreate = async (z, bundle) => {
-    const response = await z.request({
-        method: 'POST',
-        url: 'https://jsonplaceholder.typicode.com/posts',
+    const response = fetchLink('create_user', z, bundle, {
         body: {
             name: bundle.inputData.name // json by default
         }
@@ -53,16 +65,52 @@ module.exports = {
     //   }
     // },
 
-    list: {
+    hook: {
         display: {
             label: 'New User',
-            description: 'Lists the users.'
+            description: 'Triggers when a new user account is created.'
         },
+    
         operation: {
-            perform: performList,
-            // `inputFields` defines the fields a user could provide
-            // Zapier will pass them in as `bundle.inputData` later. They're optional on triggers, but required on searches and creates.
-            inputFields: []
+            type: 'hook',
+        
+            perform: (z, bundle) => {
+                z.console.log('PERFORM:');
+                z.console.log(JSON.stringify(bundle, null, 3));
+                return [{
+                    ...bundle.cleanedRequest.Data
+                }];
+            },
+            performList,
+            performSubscribe: {
+                method: 'POST',
+                url: `{{bundle.authData.site}}${triggers.user.created}`,
+                headers,
+                body: {
+                    target: '{{bundle.targetUrl}}'
+                }
+            },
+            performUnsubscribe: {
+                method: 'DELETE',
+                url: '{{bundle.authData.site}}{{bundle.subscribeData.href}}',
+                headers,
+            },
+    
+            sample: {
+                'CreatedTime': '2020-12-16T17:57:26Z',
+                'Email': 'john.smith@somedomain.com',
+                'LastLogin': '2021-01-13T16:05:23Z',
+                'Realname': 'John Smith',
+                'Username': 'johnsmith'
+            },
+    
+            outputFields: [
+                { key: 'CreatedTime', label: 'Created Time' },
+                { key: 'LastLogin', label: 'Last Log In' },
+                { key: 'Email', label: 'email' },
+                { key: 'Username', label: 'Username' },
+                { key: 'Realname', label: 'Name' },
+            ]
         }
     },
 

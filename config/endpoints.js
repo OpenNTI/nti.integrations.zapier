@@ -6,6 +6,7 @@ const e = path => `${base}${path}`;
 const users = e`/users`;
 const subscribe = e`/zapier/subscriptions`;
 const resolveMe = e`/zapier/resolve_me`;
+const service = e`/service`;
 
 /*
     // mappings of object.event: path for each permutation of object and event, e.g.
@@ -29,6 +30,7 @@ const triggers = Object.entries(objects).reduce((acc, [type, path]) => ({
 }), {});
 
 module.exports = {
+    service,
     triggers,
     users,
     resolveMe,
