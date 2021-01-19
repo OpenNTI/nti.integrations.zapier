@@ -23,15 +23,17 @@ async function getLink (rel, z, bundle) {
     return w.Links.find(link => link.rel === rel);
 }
 
-async function fetchLink (rel, z, bundle) {
+async function fetchLink (rel, z, bundle, { additionalPath, ...options } = {}) {
     const { href, method = 'GET' } = await getLink( rel, z, bundle );
     return z.request({
         method,
-        url: `${bundle.authData.site}${href}`,
+        url: `${bundle.authData.site}${href}${additionalPath}`,
         headers,
+        ...options
     });
 }
 
 module.exports = {
+    getLink,
     fetchLink
 };
