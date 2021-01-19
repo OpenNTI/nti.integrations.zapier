@@ -34,9 +34,10 @@ const performSearch = async (z, bundle) => {
 
 // creates a new user
 const performCreate = async (z, bundle) => {
-    const response = fetchLink('create_user', z, bundle, {
+    const response = await fetchLink('create_user', z, bundle, {
+        additionalPath: `?success=${bundle.authData.site}`,
         body: {
-            name: bundle.inputData.name // json by default
+            ...bundle.inputData
         }
     });
     return response.data;
@@ -132,11 +133,9 @@ module.exports = {
         },
         operation: {
             inputFields: [
-                { key: 'Username', label: 'Username' },
-                { key: 'realname', label: 'Real Name' },
-                { key: 'NonI18NFirstName', label: 'First Name' },
-                { key: 'NonI18NLastName', label: 'Last Name' },
-                {key: 'name', required: true}
+                { key: 'Username', label: 'Username', required: true },
+                { key: 'Email', required: true },
+                { key: 'Realname', label: 'Real Name', required: true },
             ],
             perform: performCreate
         },
