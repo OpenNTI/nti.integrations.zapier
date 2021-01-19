@@ -147,8 +147,11 @@ module.exports = {
     // returned records, and have obvious placeholder values that we can show to any user.
     // In this resource, the sample is reused across all methods
     sample: {
-        ID: 1,
-        Username: 'Test'
+        'CreatedTime': '2020-11-11T19:22:58Z',
+        'Email': 'john.doe@example.com',
+        'LastLogin': '2021-01-13T20:42:44Z',
+        'Realname': 'John Doe',
+        'Username': 'john.doe',
     },
 
     // If fields are custom to each user (like spreadsheet columns), `outputFields` can create human labels
@@ -157,7 +160,8 @@ module.exports = {
     // Alternatively, a static field definition can be provided, to specify labels for the fields
     // In this resource, these output fields are reused across all resources
     outputFields: [
-        {key: 'id', label: 'ID'},
-        {key: 'name', label: 'Name'}
+        { key: 'CreatedTime', label: 'Created Time' },
+        { key: 'LastLogin', label: 'Last Login' },
+        { key: 'Realname', label: 'Real Name' },
     ]
 };
