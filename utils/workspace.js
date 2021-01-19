@@ -7,14 +7,12 @@ async function getService (z, bundle) {
         url: `${bundle.authData.site}${service}`,
         headers,
     });
-    z.console.log(result.data);
     return result.data;
 }
 
 async function getWorkspace (z, bundle) {
     const service = await getService(z, bundle);
     const workspace = service.Items.find(({Title}) => Title === 'zapier');
-    z.console.log(workspace);
     return workspace;
 }
 
@@ -25,6 +23,7 @@ async function getLink (rel, z, bundle) {
 
 async function fetchLink (rel, z, bundle, { additionalPath, ...options } = {}) {
     const { href, method = 'GET' } = await getLink( rel, z, bundle );
+
     return z.request({
         method,
         url: `${bundle.authData.site}${href}${additionalPath}`,
@@ -34,6 +33,5 @@ async function fetchLink (rel, z, bundle, { additionalPath, ...options } = {}) {
 }
 
 module.exports = {
-    getLink,
     fetchLink
 };

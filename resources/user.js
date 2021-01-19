@@ -73,8 +73,8 @@ module.exports = {
             type: 'hook',
         
             perform: (z, bundle) => {
-                z.console.log('PERFORM:');
-                z.console.log(JSON.stringify(bundle, null, 3));
+                // z.console.log('PERFORM:');
+                // z.console.log(JSON.stringify(bundle, null, 3));
                 return [{
                     ...bundle.cleanedRequest.Data
                 }];

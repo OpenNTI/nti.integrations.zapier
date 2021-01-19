@@ -1,6 +1,3 @@
-const user = require('./triggers/user');
-// const course = require("./triggers/course");
-
 const userResource = require('./resources/user');
 
 const { headers } = require('./config/request');
@@ -33,18 +30,6 @@ module.exports = {
             return result.data;
         }
     },
-
-    // If you want your trigger to show up, you better include it here!
-    triggers: {
-        // user,
-        // ...course
-    },
-
-    // If you want your searches to show up, you better include it here!
-    searches: {},
-
-    // If you want your creates to show up, you better include it here!
-    creates: {},
 
     resources: {
         [userResource.key]: userResource
