@@ -21,7 +21,7 @@ async function getLink (rel, z, bundle) {
     return w.Links.find(link => link.rel === rel);
 }
 
-async function fetchLink (rel, z, bundle, { additionalPath, ...options } = {}) {
+async function fetchLink (rel, z, bundle, { additionalPath = '', ...options } = {}) {
     const { href, method = 'GET' } = await getLink( rel, z, bundle );
 
     return z.request({
