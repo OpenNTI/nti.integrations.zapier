@@ -2,7 +2,7 @@ const { fetchLink } = require('../utils/workspace');
 const { headers } = require('../config/request');
 const { triggers } = require('../config/endpoints');
 
-// get a list of users
+// just resolves the current/authenticated user for use as a sample
 const performList = async (z, bundle) => {
     const response = await fetchLink('resolve_me', z, bundle);
 
@@ -26,12 +26,10 @@ const performList = async (z, bundle) => {
 // find a particular user by name (or other search criteria)
 const performSearch = async (z, bundle) => {
     const response = await fetchLink('user_search', z, bundle, {
-        params: {
-            name: bundle.inputData.name
-        }
+        additionalPath: `/${bundle.inputData.name}`
     });
 
-    return response.data;
+    return response.data.Items;
 };
 
 // creates a new user
