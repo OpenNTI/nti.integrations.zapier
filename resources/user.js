@@ -1,6 +1,6 @@
 const { fetchLink } = require('../utils/workspace');
 const { headers } = require('../config/request');
-const { triggers } = require('../config/endpoints');
+const { getSubscriptionPath, pwReset } = require('../config/endpoints');
 
 // just resolves the current/authenticated user for use as a sample
 const performList = async (z, bundle) => {
@@ -35,7 +35,7 @@ const performSearch = async (z, bundle) => {
 // creates a new user
 const performCreate = async (z, bundle) => {
     const response = await fetchLink('create_user', z, bundle, {
-        additionalPath: `?success=${bundle.authData.site}`,
+        additionalPath: `?success=${bundle.authData.site}${pwReset}`,
         body: {
             ...bundle.inputData
         }
@@ -83,7 +83,7 @@ module.exports = {
             performList,
             performSubscribe: {
                 method: 'POST',
-                url: `{{bundle.authData.site}}${triggers.user.created}`,
+                url: `{{bundle.authData.site}}${getSubscriptionPath('user', 'created')}`,
                 headers,
                 body: {
                     target: '{{bundle.targetUrl}}'
