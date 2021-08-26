@@ -1,5 +1,3 @@
-const { getSubscriptionPath } = require('../config/endpoints');
-const { headers } = require('../config/request');
 const { getBaseSubscriptionConfig } = require('../lib/subscriptions.js');
 // {
 // 	"Class": "CourseCreatedEvent",
@@ -20,16 +18,59 @@ const { getBaseSubscriptionConfig } = require('../lib/subscriptions.js');
 // 	"MimeType": "application/vnd.nextthought.zapier.event.coursecreated"
 // }
 
+
+// progressUpdated: {
+//     User: {
+//         Class: '',
+//         MimeType: '',
+//         Username: '',
+//         Email: '',
+//         Realname: '',
+//         NonI18NFirstName: '',
+//         NonI18NLastName: '',
+//         CreatedTime: '',
+//         LastLogin: '',
+//         LastSeen: '',
+//     },
+//     Course: {
+//         Id: '',
+//         ProviderId: '',
+//         Title: '',
+//         Description: '',
+//         StartDate: '',
+//         EndDate: '',
+//     },
+//     Progress: {
+//         AbsoluteProgress: 10, // number of items completed
+//         MaxPossibleProgress: 50, // total completable items in the course
+//         PercentageProgress: 20, // percentage of items completed for the course
+//     }
+// }
+
 const sampleData = {
-    'Id': 'tag:nextthought.com,2011-10:NTI-CourseInfo-0000000000000000000_0000000000000000000',
-    'Title': 'Zapier Test Course 001',
-    'ProviderId': 'ZT-001',
-    'Description': '',
-    'RichDescription': 'Testing zapier trigger',
-    'StartDate': '2021-08-25T19:32:59Z',
-    'EndDate': '2021-08-25T19:32:59Z',
-    'CreatedTime': '2021-08-25T19:32:59Z',
-    'Last Modified': '2021-08-25T19:32:59Z',
+    created: {
+        'Id': 'tag:nextthought.com,2011-10:NTI-CourseInfo-0000000000000000000_0000000000000000000',
+        'Title': 'Zapier Test Course 001',
+        'ProviderId': 'ZT-001',
+        'Description': '',
+        'RichDescription': 'Testing zapier trigger',
+        'StartDate': '2021-08-25T19:32:59Z',
+        'EndDate': '2021-08-25T19:32:59Z',
+        'CreatedTime': '2021-08-25T19:32:59Z',
+        'Last Modified': '2021-08-25T19:32:59Z',
+    },
+    progressUpdated: {
+        Username: 'jane.doe',
+        Email: 'student@domain.com',
+        CourseId: 'tag:nextthought.com,2011-10:NTI-CourseInfo-0000000000000000000_0000000000000000000',
+        CourseTitle: 'Zapier Test Course 001',
+        Realname: 'Jane Doe',
+        NonI18NFirstName: 'Jane',
+        NonI18NLastName: 'Doe',
+        AbsoluteProgress: 10.1, // number of items completed
+        MaxPossibleProgress: 50, // total completable items in the course
+        PercentageProgress: 20, // percentage of items completed for the course
+    }
 };
 
 const noun = 'course';
@@ -57,11 +98,11 @@ const created = {
         type: 'hook',
     
         perform,
-        performList: async () => ([sampleData]),
-        
+        performList: async () => ([sampleData.created]),
+
         ...getBaseSubscriptionConfig(noun, 'created'),
 
-        sample: sampleData,
+        sample: sampleData.created,
 
         outputFields: [
             { key: 'Id', label: 'Course ID' },
@@ -72,6 +113,76 @@ const created = {
             { key: 'RichDescription', label: 'Description (Rich Text)' },
             { key: 'StartDate', label: 'Start Date' },
             { key: 'EndDate', label: 'End Date' },
+        ]
+    }
+};
+
+// https://github.com/NextThought/nti.app.products.zapier/blob/master/docs/initial_api.rst#course-progress-updated
+const progressUpdated = {
+    key: key`progress_updated`,
+    noun,
+
+    display: {
+        label: 'Course Progress Updated',
+        description: 'Triggers when users complete items in a course.'
+    },
+
+    operation: {
+        type: 'hook',
+    
+        perform: (z, bundle) => {
+            z.console.log(JSON.stringify(bundle, null, 3));
+            const {
+                User: {
+                    Username,
+                    Email,
+                    Realname,
+                    NonI18NFirstName,
+                    NonI18NLastName,
+                } = {},
+                Course: {
+                    Id: CourseId,
+                    Title: CourseTitle,
+                } = {},
+                Progress: {
+                    AbsoluteProgress,
+                    MaxPossibleProgress,
+                    PercentageProgress,
+                } = {}
+            } = bundle.cleanedRequest.Data;
+
+            return [{
+                Username,
+                Email,
+                Realname,
+                NonI18NFirstName,
+                NonI18NLastName,
+                CourseId,
+                CourseTitle,
+                AbsoluteProgress,
+                MaxPossibleProgress,
+                PercentageProgress,
+            }];
+        },
+
+        performList: async () => ([sampleData.progressUpdated]),
+
+        ...getBaseSubscriptionConfig(noun, 'progress_updated'),
+
+        sample: sampleData.progressUpdated,
+
+        outputFields: [
+            { key: 'UserId', label: 'User ID' },
+            { key: 'Username' },
+            { key: 'Email' },
+            { key: 'CourseId', label: 'Course ID' },
+            { key: 'CourseTitle', label: 'Course Title' },
+            { key: 'Realname', label: 'Real Name' },
+            { key: 'NonI18NFirstName', label: 'First Name' },
+            { key: 'NonI18NLastName', label: 'Last Name' },
+            { key: 'AbsoluteProgress', label: 'Absolute Progress', type: 'number' },
+            { key: 'MaxPossibleProgress', label: 'Max Possible Progress', type: 'number' },
+            { key: 'PercentageProgress', label: 'Percentage Progress', type: 'number' },
         ]
     }
 };
@@ -105,6 +216,6 @@ const created = {
 // };
 
 module.exports = {
-    [created.key]: created
+    [created.key]: created,
+    [progressUpdated.key]: progressUpdated
 };
-
