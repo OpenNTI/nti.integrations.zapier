@@ -1,6 +1,6 @@
-const { fetchLink } = require('../utils/workspace');
-const { headers } = require('../config/request');
-const { getSubscriptionPath, pwReset } = require('../config/endpoints');
+const { fetchLink } = require('../utils/workspace.js');
+const { pwReset } = require('../config/endpoints.js');
+const { getBaseSubscriptionConfig } = require('../lib/subscriptions.js');
 
 // just resolves the current/authenticated user for use as a sample
 const performList = async (z, bundle) => {
@@ -74,26 +74,12 @@ module.exports = {
             type: 'hook',
         
             perform: (z, bundle) => {
-                // z.console.log('PERFORM:');
-                // z.console.log(JSON.stringify(bundle, null, 3));
                 return [{
                     ...bundle.cleanedRequest.Data
                 }];
             },
             performList,
-            performSubscribe: {
-                method: 'POST',
-                url: `{{bundle.authData.site}}${getSubscriptionPath('user', 'created')}`,
-                headers,
-                body: {
-                    target: '{{bundle.targetUrl}}'
-                }
-            },
-            performUnsubscribe: {
-                method: 'DELETE',
-                url: '{{bundle.authData.site}}{{bundle.subscribeData.href}}',
-                headers,
-            },
+            ...getBaseSubscriptionConfig('user', 'created'),
     
             sample: {
                 'CreatedTime': '2020-12-16T17:57:26Z',
