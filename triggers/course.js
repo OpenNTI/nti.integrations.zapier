@@ -1,6 +1,6 @@
 const { getSubscriptionPath } = require('../config/endpoints');
 const { headers } = require('../config/request');
-
+const { getBaseSubscriptionConfig } = require('../lib/subscriptions.js');
 // {
 // 	"Class": "CourseCreatedEvent",
 // 	"Data": {
@@ -44,25 +44,6 @@ const perform = (z, bundle) => {
     }];
 };
 
-const subscriptions = type => {
-    return {
-        performSubscribe: {
-            method: 'POST',
-            url: `{{bundle.authData.site}}${getSubscriptionPath(noun, type)}`,
-            headers,
-            body: {
-                target: '{{bundle.targetUrl}}'
-            }
-        },
-
-        performUnsubscribe: {
-            method: 'DELETE',
-            url: '{{bundle.authData.site}}{{bundle.subscribeData.href}}',
-            headers,
-        }
-    };
-};
-
 const created = {
     key: key`create`,
     noun,
@@ -77,7 +58,8 @@ const created = {
     
         perform,
         performList: async () => ([sampleData]),
-        ...subscriptions('created'),
+        
+        ...getBaseSubscriptionConfig(noun, 'created'),
 
         sample: sampleData,
 
