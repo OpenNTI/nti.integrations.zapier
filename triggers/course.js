@@ -1,6 +1,37 @@
 const { getSubscriptionPath } = require('../config/endpoints');
 const { headers } = require('../config/request');
 
+// {
+// 	"Class": "CourseCreatedEvent",
+// 	"Data": {
+// 		"Class": "CourseDetails",
+// 		"CreatedTime": "2021-08-25T19:32:59Z",
+// 		"Description": "",
+// 		"EndDate": null,
+// 		"Id": "tag:nextthought.com,2011-10:NTI-CourseInfo-6970598910961723944_4744623187884550321",
+// 		"Last Modified": "2021-08-25T19:32:59Z",
+// 		"MimeType": "application/vnd.nextthought.zapier.coursedetails",
+// 		"ProviderId": "ZT-001",
+// 		"RichDescription": "Testing zapier trigger",
+// 		"StartDate": null,
+// 		"Title": "Zapier Test Course 001"
+// 	},
+// 	"EventType": "course.created",
+// 	"MimeType": "application/vnd.nextthought.zapier.event.coursecreated"
+// }
+
+const sampleData = {
+    'Id': 'tag:nextthought.com,2011-10:NTI-CourseInfo-0000000000000000000_0000000000000000000',
+    'Title': 'Zapier Test Course 001',
+    'ProviderId': 'ZT-001',
+    'Description': '',
+    'RichDescription': 'Testing zapier trigger',
+    'StartDate': '2021-08-25T19:32:59Z',
+    'EndDate': '2021-08-25T19:32:59Z',
+    'CreatedTime': '2021-08-25T19:32:59Z',
+    'Last Modified': '2021-08-25T19:32:59Z',
+};
+
 const noun = 'course';
 
 const key = x => `${noun}_${x}`;
@@ -45,25 +76,20 @@ const created = {
         type: 'hook',
     
         perform,
-        // performList,
-        ...subscriptions('create'),
+        performList: async () => ([sampleData]),
+        ...subscriptions('created'),
 
-        sample: {
-            id:	'NTIID of course instance',
-            providerId: 'providerId',
-            title: 'Chemistry of Beer',
-            description: 'Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.',
-            startDate: '2021-01-13T17:57:26Z',
-            endDate: '2021-04-13T17:57:26Z',
-        },
+        sample: sampleData,
 
         outputFields: [
-            { key: 'id', label: 'The id of the course' },
-            { key: 'providerId', label: 'The providerId of the course' },
-            { key: 'title', label: 'The title of the course' },
-            { key: 'description', label: 'The description of the course' },
-            { key: 'startDate', label: 'The startDate of the course' },
-            { key: 'endDate', label: 'The endDate of the course' },
+            { key: 'Id', label: 'Course ID' },
+            { key: 'CreatedTime', label: 'Created Time' },
+            { key: 'ProviderId', label: 'Provider ID' },
+            { key: 'Title' },
+            { key: 'Description' },
+            { key: 'RichDescription', label: 'Description (Rich Text)' },
+            { key: 'StartDate', label: 'Start Date' },
+            { key: 'EndDate', label: 'End Date' },
         ]
     }
 };

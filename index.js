@@ -1,4 +1,5 @@
-const userResource = require('./resources/user');
+const userResource = require('./resources/user.js');
+const courseTriggers = require('./triggers/course.js');
 
 const { headers } = require('./config/request');
 const { users } = require('./config/endpoints');
@@ -17,21 +18,28 @@ module.exports = {
                 label: 'Site URL',
                 required: true,
                 placeholder: 'https://mysite.nextthought.com',
-                helpText: 'Enter the url you use to access the [NextThought](https://nextthought.com) platform.'
-            }
+                helpText:
+          'Enter the url you use to access the [NextThought](https://nextthought.com) platform.',
+            },
         ],
         connectionLabel: '{{site}} - {{username}}', // displayed in zapier UI; fields returned by the test function
         test: async (z, bundle) => {
-            const { authData: {site, username} } = bundle;
+            const {
+                authData: { site, username },
+            } = bundle;
             const result = await z.request({
                 url: `${site}${users}/${username}`,
-                headers
+                headers,
             });
             return result.data;
-        }
+        },
     },
 
     resources: {
-        [userResource.key]: userResource
+        [userResource.key]: userResource,
+    },
+
+    triggers: {
+        ...courseTriggers,
     },
 };
