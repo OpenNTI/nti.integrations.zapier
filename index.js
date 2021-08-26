@@ -1,5 +1,5 @@
 const userResource = require('./resources/user.js');
-const courseTriggers = require('./triggers/course.js');
+const courseTriggers = require('./triggers/course/index.js');
 
 const { headers } = require('./config/request');
 const { users } = require('./config/endpoints');
