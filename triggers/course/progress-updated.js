@@ -12,7 +12,7 @@ const sample = {
     NonI18NLastName: 'Doe',
     AbsoluteProgress: 10.1, // number of items completed
     MaxPossibleProgress: 50, // total completable items in the course
-    PercentageProgress: 20.2, // percentage of items completed for the course
+    PercentageProgress: 0.202, // percentage of items completed for the course
 };
 
 // https://github.com/NextThought/nti.app.products.zapier/blob/master/docs/initial_api.rst#course-progress-updated
@@ -109,7 +109,7 @@ module.exports = {
     Progress: {
         AbsoluteProgress: 10, // number of items completed
         MaxPossibleProgress: 50, // total completable items in the course
-        PercentageProgress: 20, // percentage of items completed for the course
+        PercentageProgress: 0.202, // percentage of items completed for the course
     }
 }
 */
