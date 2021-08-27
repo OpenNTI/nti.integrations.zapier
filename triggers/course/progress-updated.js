@@ -3,10 +3,10 @@ const { getBaseSubscriptionConfig } = require('../../lib/subscriptions.js');
 const { noun, key } = require('./constants');
 
 const sample = {
+    CourseTitle: 'Zapier Test Course 001',
+    CourseId: 'tag:nextthought.com,2011-10:NTI-CourseInfo-0000000000000000000_0000000000000000000',
     Username: 'jane.doe',
     Email: 'student@domain.com',
-    CourseId: 'tag:nextthought.com,2011-10:NTI-CourseInfo-0000000000000000000_0000000000000000000',
-    CourseTitle: 'Zapier Test Course 001',
     Realname: 'Jane Doe',
     NonI18NFirstName: 'Jane',
     NonI18NLastName: 'Doe',
@@ -70,7 +70,6 @@ module.exports = {
         sample,
         
         outputFields: [
-            { key: 'UserId', label: 'User ID' },
             { key: 'Username' },
             { key: 'Email' },
             { key: 'CourseId', label: 'Course ID' },
