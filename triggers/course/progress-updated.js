@@ -41,6 +41,7 @@ module.exports = {
                 Course: {
                     Id: CourseId,
                     Title: CourseTitle,
+                    ProviderId: CourseProviderId,
                 } = {},
                 Progress: {
                     AbsoluteProgress,
@@ -57,6 +58,7 @@ module.exports = {
                 NonI18NLastName,
                 CourseId,
                 CourseTitle,
+                CourseProviderId,
                 AbsoluteProgress,
                 MaxPossibleProgress,
                 PercentageProgress,
