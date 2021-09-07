@@ -36,6 +36,7 @@ const perform = (z, bundle) => {
             Title: CourseTitle,
             ProviderId,
             Description,
+            RichDescription,
             StartDate,
             EndDate
         } = {},
@@ -52,6 +53,7 @@ const perform = (z, bundle) => {
         CourseId,
         ProviderId,
         Description,
+        RichDescription,
         StartDate,
         EndDate,
         Scope
