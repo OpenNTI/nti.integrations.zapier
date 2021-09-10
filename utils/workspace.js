@@ -23,11 +23,13 @@ async function getLink (rel, z, bundle) {
 
 async function fetchLink (rel, z, bundle, { additionalPath = '', ...options } = {}) {
     const { href, method = 'GET' } = await getLink( rel, z, bundle );
+    const params = bundle.inputData;
 
     return z.request({
         method,
         url: `${bundle.authData.site}${href}${additionalPath}`,
         headers,
+        params,
         ...options
     });
 }
