@@ -89,6 +89,7 @@ module.exports = {
             { key: 'CourseId', label: 'Course ID' },
             { key: 'ProviderId', label: 'Course Provider ID' },
             { key: 'Description', label: 'Course Description' },
+            { key: 'RichDescription', label: 'Course Description (Rich Text)' },
             { key: 'StartDate', label: 'Start Date' },
             { key: 'EndDate', label: 'End Date' },
             { key: 'Scope' },
