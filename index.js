@@ -1,6 +1,7 @@
 const userResource = require('./resources/user.js');
 const courseTriggers = require('./triggers/course/index.js');
 const userTriggers = require('./triggers/user/index.js');
+const creates = require('./creates/index.js');
 
 const { headers } = require('./config/request');
 const { users } = require('./config/endpoints');
@@ -44,4 +45,6 @@ module.exports = {
         ...courseTriggers,
         ...userTriggers,
     },
+
+    creates,
 };
