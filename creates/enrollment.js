@@ -37,7 +37,7 @@ module.exports = {
                     Description,
                     StartDate,
                     EndDate,
-                    Title,
+                    Title: CourseTitle,
                     ProviderId,
                     RichDescription,
                     Id: CourseId
@@ -52,7 +52,7 @@ module.exports = {
             } = response.data;
 
             return {
-                Title,
+                CourseTitle,
                 CourseId,
                 ProviderId,
                 Description,
