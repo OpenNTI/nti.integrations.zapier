@@ -1,18 +1,6 @@
 const { getBaseSubscriptionConfig } = require('../../lib/subscriptions.js');
-
+const CourseDetails = require('../../lib/event-data/CourseDetails');
 const { noun, key } = require('./constants.js');
-
-const sample = {
-    'Id': 'tag:nextthought.com,2011-10:NTI-CourseInfo-0000000000000000000_0000000000000000000',
-    'Title': 'Zapier Test Course 001',
-    'ProviderId': 'ZT-001',
-    'Description': '',
-    'RichDescription': 'Testing zapier trigger',
-    'StartDate': '2021-08-25T19:32:59Z',
-    'EndDate': '2021-08-25T19:32:59Z',
-    'CreatedTime': '2021-08-25T19:32:59Z',
-    'Last Modified': '2021-08-25T19:32:59Z',
-};
 
 const perform = (z, bundle) => {
     z.console.log('PERFORM:');
@@ -21,6 +9,9 @@ const perform = (z, bundle) => {
         ...bundle.cleanedRequest.Data
     }];
 };
+
+const { outputFields } = CourseDetails;
+const sample = CourseDetails.sample.dataserver();
 
 module.exports = {
     key: key`create`,
@@ -40,17 +31,7 @@ module.exports = {
         ...getBaseSubscriptionConfig(noun, 'created'),
 
         sample,
-
-        outputFields: [
-            { key: 'Id', label: 'Course ID' },
-            { key: 'CreatedTime', label: 'Created Time' },
-            { key: 'ProviderId', label: 'Provider ID' },
-            { key: 'Title' },
-            { key: 'Description' },
-            { key: 'RichDescription', label: 'Description (Rich Text)' },
-            { key: 'StartDate', label: 'Start Date' },
-            { key: 'EndDate', label: 'End Date' },
-        ]
+        outputFields
     }
 };
 
