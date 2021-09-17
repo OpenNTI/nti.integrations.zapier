@@ -8,6 +8,7 @@ const service = e`/service`;
 const pwReset = '/login/recover/reset';
 
 module.exports = {
+    base,
     service,
     users,
     pwReset,

@@ -1,3 +1,5 @@
+require('./lib/event-data/index.js');
+
 const userResource = require('./resources/user.js');
 const courseTriggers = require('./triggers/course/index.js');
 const userTriggers = require('./triggers/user/index.js');
@@ -6,12 +8,14 @@ const searches = require('./searches/index.js');
 
 const { headers } = require('./config/request');
 const { users } = require('./config/endpoints');
+const middleware = require('./middleware');
 
 module.exports = {
     // This is just shorthand to reference the installed dependencies you have.
     // Zapier will need to know these before we can upload.
     version: require('./package.json').version,
     platformVersion: require('zapier-platform-core').version,
+    ...middleware, // beforeRequest
 
     authentication: {
         type: 'basic',
