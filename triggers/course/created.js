@@ -2,16 +2,9 @@ const { getBaseSubscriptionConfig } = require('../../lib/subscriptions.js');
 const CourseDetails = require('../../lib/event-data/CourseDetails');
 const { noun, key } = require('./constants.js');
 
-const perform = (z, bundle) => {
-    z.console.log('PERFORM:');
-    z.console.log(JSON.stringify(bundle, null, 3));
-    return [{
-        ...bundle.cleanedRequest.Data
-    }];
-};
+const { outputFields, transform, performList } = CourseDetails;
 
-const { outputFields, performList } = CourseDetails;
-const sample = CourseDetails.sample.dataserver();
+const sample = CourseDetails.sample.output();
 
 module.exports = {
     key: key`create`,
@@ -25,7 +18,7 @@ module.exports = {
     operation: {
         type: 'hook',
     
-        perform,
+        perform: (z, bundle) => [transform(bundle.cleanedRequest.Data)],
         performList,
 
         ...getBaseSubscriptionConfig(noun, 'created'),
