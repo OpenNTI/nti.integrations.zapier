@@ -47,6 +47,8 @@ module.exports = {
                     AbsoluteProgress,
                     MaxPossibleProgress,
                     PercentageProgress,
+                    Completed,
+                    Success,
                 } = {}
             } = bundle.cleanedRequest.Data;
 
@@ -62,6 +64,8 @@ module.exports = {
                 AbsoluteProgress,
                 MaxPossibleProgress,
                 PercentageProgress,
+                Completed,
+                Success
             }];
         },
 
@@ -82,6 +86,8 @@ module.exports = {
             { key: 'AbsoluteProgress', label: 'Absolute Progress', type: 'number' },
             { key: 'MaxPossibleProgress', label: 'Max Possible Progress', type: 'number' },
             { key: 'PercentageProgress', label: 'Percentage Progress', type: 'number' },
+            { key: 'Completed', type: 'boolean' },
+            { key: 'Success', type: 'boolean' },
         ]
     }
 };
