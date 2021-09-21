@@ -10,7 +10,7 @@ const perform = (z, bundle) => {
     }];
 };
 
-const { outputFields } = CourseDetails;
+const { outputFields, performList } = CourseDetails;
 const sample = CourseDetails.sample.dataserver();
 
 module.exports = {
@@ -26,7 +26,7 @@ module.exports = {
         type: 'hook',
     
         perform,
-        performList: async () => ([sample]),
+        performList,
 
         ...getBaseSubscriptionConfig(noun, 'created'),
 
