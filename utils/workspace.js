@@ -21,13 +21,14 @@ async function getLink (rel, z, bundle) {
     return w.Links.find(link => link.rel === rel);
 }
 
-async function fetchLink (rel, z, bundle, { additionalPath = '', ...options } = {}) {
+async function fetchLink (rel, z, bundle, { additionalPath = '', params: queryParams, ...options } = {}) {
     const { href, method = 'GET' } = await getLink( rel, z, bundle );
+    const queryString = queryParams ? `?${new URLSearchParams(queryParams).toString()}` : '';
     const params = bundle.inputData;
 
     return z.request({
         method,
-        url: `${bundle.authData.site}${href}${additionalPath}`,
+        url: `${bundle.authData.site}${href}${additionalPath}${queryString}`,
         headers,
         params,
         ...options
