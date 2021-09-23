@@ -9,7 +9,7 @@ const sample = UserDetails.sample.output();
 // just resolves the current/authenticated user for use as a sample
 const performList = async (z, bundle) => {
     const response = await fetchLink('resolve_me', z, bundle);
-    return [UserDetails.transform(response.Data)];
+    return [transform(response.data)];
 };
 
 // find a particular user by name (or other search criteria)
