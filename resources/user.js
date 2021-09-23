@@ -1,26 +1,15 @@
 const { fetchLink } = require('../utils/workspace.js');
 const { pwReset } = require('../config/endpoints.js');
 const { getBaseSubscriptionConfig } = require('../lib/subscriptions.js');
+const UserDetails = require('../lib/event-data/UserDetails');
+
+const { transform, outputFields } = UserDetails;
+const sample = UserDetails.sample.output();
 
 // just resolves the current/authenticated user for use as a sample
 const performList = async (z, bundle) => {
     const response = await fetchLink('resolve_me', z, bundle);
-
-    const {
-        CreatedTime,
-        Email,
-        LastLogin,
-        Realname,
-        Username,
-    } = response.data;
-
-    return [{
-        CreatedTime,
-        Email,
-        LastLogin,
-        Realname,
-        Username,
-    }];
+    return [UserDetails.transform(response.Data)];
 };
 
 // find a particular user by name (or other search criteria)
@@ -29,7 +18,7 @@ const performSearch = async (z, bundle) => {
         additionalPath: `/${bundle.inputData.name}`
     });
 
-    return response.data.Items;
+    return response.data.Items.map(transform);
 };
 
 // creates a new user
@@ -40,7 +29,7 @@ const performCreate = async (z, bundle) => {
             ...bundle.inputData
         }
     });
-    return response.data;
+    return transform(response.data);
 };
 
 module.exports = {
@@ -73,29 +62,12 @@ module.exports = {
         operation: {
             type: 'hook',
         
-            perform: (z, bundle) => {
-                return [{
-                    ...bundle.cleanedRequest.Data
-                }];
-            },
+            perform: (z, bundle) => [transform(bundle.cleanedRequest.Data)],
             performList,
             ...getBaseSubscriptionConfig('user', 'created'),
     
-            sample: {
-                'CreatedTime': '2020-12-16T17:57:26Z',
-                'Email': 'john.smith@somedomain.com',
-                'LastLogin': '2021-01-13T16:05:23Z',
-                'Realname': 'John Smith',
-                'Username': 'johnsmith'
-            },
-    
-            outputFields: [
-                { key: 'CreatedTime', label: 'Created Time' },
-                { key: 'LastLogin', label: 'Last Log In' },
-                { key: 'Email', label: 'email' },
-                { key: 'Username', label: 'Username' },
-                { key: 'Realname', label: 'Name' },
-            ]
+            sample,
+            outputFields
         }
     },
 
@@ -131,22 +103,12 @@ module.exports = {
     // from the API, Zapier will fallback to this hard-coded sample. It should reflect the data structure of
     // returned records, and have obvious placeholder values that we can show to any user.
     // In this resource, the sample is reused across all methods
-    sample: {
-        'CreatedTime': '2020-11-11T19:22:58Z',
-        'Email': 'john.doe@example.com',
-        'LastLogin': '2021-01-13T20:42:44Z',
-        'Realname': 'John Doe',
-        'Username': 'john.doe',
-    },
+    sample,
 
     // If fields are custom to each user (like spreadsheet columns), `outputFields` can create human labels
     // For a more complete example of using dynamic fields see
     // https://github.com/zapier/zapier-platform/tree/master/packages/cli#customdynamic-fields
     // Alternatively, a static field definition can be provided, to specify labels for the fields
     // In this resource, these output fields are reused across all resources
-    outputFields: [
-        { key: 'CreatedTime', label: 'Created Time' },
-        { key: 'LastLogin', label: 'Last Login' },
-        { key: 'Realname', label: 'Real Name' },
-    ]
+    outputFields,
 };
