@@ -3,8 +3,8 @@ const { getBaseSubscriptionConfig } = require('../../lib/subscriptions.js');
 const flatten = require('../../lib/event-data/utils/flatten');
 
 const CourseDetails = require('../../lib/event-data/CourseDetails');
-const UserDetails = require('../../lib/event-data/CourseDetails');
-const ProgressDetails = require('../../lib/event-data/CourseDetails');
+const UserDetails = require('../../lib/event-data/UserDetails');
+const ProgressDetails = require('../../lib/event-data/ProgressDetails');
 
 const { noun, key } = require('./constants');
 
