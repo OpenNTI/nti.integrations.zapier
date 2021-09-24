@@ -49,32 +49,45 @@ module.exports = {
 
 /*
 {
-    User: {
-        Class: '',
-        MimeType: '',
-        Username: '',
-        Email: '',
-        Realname: '',
-        NonI18NFirstName: '',
-        NonI18NLastName: '',
-        CreatedTime: '',
-        LastLogin: '',
-        LastSeen: '',
+  "Class": "UserProgressUpdatedEvent",
+  "Data": {
+    "Class": "ProgressSummary",
+    "Course": {
+      "Class": "CourseDetails",
+      "CreatedTime": "2021-09-15T19:17:58Z",
+      "Description": "",
+      "EndDate": null,
+      "Id": "tag:nextthought.com,2011-10:NTI-CourseInfo-740963213872267802_4744630794249276970",
+      "Last Modified": "2021-09-15T19:18:10Z",
+      "MimeType": "application/vnd.nextthought.zapier.coursedetails",
+      "ProviderId": "zappier_course",
+      "RichDescription": "",
+      "StartDate": null,
+      "Title": "zappier course"
     },
-    Course: {
-        Id: '',
-        ProviderId: '',
-        Title: '',
-        Description: '',
-        StartDate: '',
-        EndDate: '',
+    "MimeType": "application/vnd.nextthought.zapier.progresssummary",
+    "Progress": {
+      "AbsoluteProgress": 2,
+      "Class": "CompletionContextProgressDetails",
+      "Completed": false,
+      "MaxPossibleProgress": 3,
+      "MimeType": "application/vnd.nextthought.zapier.completioncontextprogressdetails",
+      "PercentageProgress": 0.6666666666666666,
+      "Success": false
     },
-    Progress: {
-        AbsoluteProgress: 10, // number of items completed
-        MaxPossibleProgress: 50, // total completable items in the course
-        PercentageProgress: 0.202, // percentage of items completed for the course
-        Completed: false,
-        Success: false,
+    "User": {
+      "Class": "UserDetails",
+      "CreatedTime": "2021-09-15T20:04:22Z",
+      "Email": "julie.zhu+zap03@nextthought.com",
+      "LastLogin": "2021-09-15T20:04:23Z",
+      "LastSeen": "2021-09-15T20:04:23Z",
+      "MimeType": "application/vnd.nextthought.zapier.userdetails",
+      "NonI18NFirstName": "Zap",
+      "NonI18NLastName": "Tester03",
+      "Realname": "Zap Tester03",
+      "Username": "zap.alpha.tester03"
     }
-}
-*/
+  },
+  "EventType": "course.progress_updated",
+  "MimeType": "application/vnd.nextthought.zapier.event.userprogressupdated"
+}*/
