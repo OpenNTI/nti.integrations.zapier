@@ -1,6 +1,10 @@
 /* globals describe it expect */
+const zapier = require('zapier-platform-core');
 
+const App = require('../../../index');
 const trigger = require('../progress-updated');
+
+const appTester = zapier.createAppTester(App);
 
 const Data = {
     User: {
@@ -28,8 +32,8 @@ const Data = {
 };
 
 describe('progress-updated trigger', () => {
-    it('extracts data from bundle', () => {
-        const [result] = trigger.operation.perform(undefined, { cleanedRequest: { Data } });
+    it('extracts data from bundle', async () => {
+        const [result] = await appTester(trigger.operation.perform, { cleanedRequest: { Data } });
         
         // User
         expect(result).toHaveProperty('Username', Data.User.Username);
@@ -41,6 +45,8 @@ describe('progress-updated trigger', () => {
 
         // Progress
         expect(result).toHaveProperty('AbsoluteProgress', Data.Progress.AbsoluteProgress);
+        expect(result).toHaveProperty('MaxPossibleProgress', Data.Progress.MaxPossibleProgress);
+        expect(result).toHaveProperty('PercentageProgress', Data.Progress.PercentageProgress);
         expect(result).toHaveProperty('Completed', Data.Progress.Completed);
         expect(result).toHaveProperty('Success', Data.Progress.Success);
     });
