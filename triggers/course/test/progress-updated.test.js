@@ -18,7 +18,7 @@ const Data = {
         ProviderId: 'ZT-PID',
     },
     Progress: {
-        MimeType: 'application/vnd.nextthought.zapier.progressdetails',
+        MimeType: 'application/vnd.nextthought.zapier.completioncontextprogressdetails',
         AbsoluteProgress: 10,
         MaxPossibleProgress: 50,
         PercentageProgress: 0.2,
