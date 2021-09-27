@@ -29,7 +29,7 @@ module.exports = {
         type: 'hook',
     
         perform: (z, bundle) => {
-            // z?.console?.log(JSON.stringify(bundle, null, 3));
+            // z?.console?.log(JSON.stringify(bundle.cleanedRequest, null, 3));
             return [flatten(bundle.cleanedRequest.Data)];
         },
 

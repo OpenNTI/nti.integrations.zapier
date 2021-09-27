@@ -1,64 +1,10 @@
 const { getBaseSubscriptionConfig } = require('../../lib/subscriptions.js');
+const flatten = require('../../lib/event-data/utils/flatten');
 
 const { noun, key } = require('./constants.js');
+const UserEnrolledEvent = require('../../lib/event-data/UserEnrolledEvent.js');
 
-const sample = {
-    // Course
-    CourseId: 'tag:nextthought.com,2011-10:NTI-CourseInfo-0000000000000000000_0000000000000000000',
-    CourseTitle: 'Zapier Test Course 001',
-    ProviderId: 'ZT-001',
-    Description: 'This is the course description',
-    RichDescription: 'This is the rich course description',
-    StartDate: '2021-08-25T19:32:59Z',
-    EndDate: '2021-08-25T19:32:59Z',
-
-    // User
-    Username: 'jane.doe',
-    Email: 'student@domain.com',
-    Realname: 'Jane Doe',
-    NonI18NFirstName: 'Jane',
-    NonI18NLastName: 'Doe',
-};
-
-const perform = (z, bundle) => {
-    z.console.log('PERFORM:');
-    z.console.log(JSON.stringify(bundle, null, 3));
-    const {
-        User: {
-            Username,
-            Email,
-            Realname,
-            NonI18NFirstName,
-            NonI18NLastName,
-        } = {},
-        Course: {
-            Id: CourseId,
-            Title: CourseTitle,
-            ProviderId,
-            Description,
-            RichDescription,
-            StartDate,
-            EndDate
-        } = {},
-        Scope,
-    } = bundle.cleanedRequest.Data;
-
-    return [{
-        Username,
-        Email,
-        Realname,
-        NonI18NFirstName,
-        NonI18NLastName,
-        CourseTitle,
-        CourseId,
-        ProviderId,
-        Description,
-        RichDescription,
-        StartDate,
-        EndDate,
-        Scope
-    }];
-};
+const sample = UserEnrolledEvent.sample.output();
 
 module.exports = {
     key: key`enrolled`,
@@ -72,28 +18,14 @@ module.exports = {
     operation: {
         type: 'hook',
     
-        perform,
+        perform: (z, bundle) => [flatten(bundle.cleanedRequest.Data)],
         performList: async () => ([sample]),
 
         ...getBaseSubscriptionConfig(noun, 'enrolled'),
 
         sample,
 
-        outputFields: [
-            { key: 'Username' },
-            { key: 'Email' },
-            { key: 'Realname', label: 'Real Name' },
-            { key: 'NonI18NFirstName', label: 'First Name' },
-            { key: 'NonI18NLastName', label: 'Last Name' },
-            { key: 'CourseTitle', label: 'Course Title' },
-            { key: 'CourseId', label: 'Course ID' },
-            { key: 'ProviderId', label: 'Course Provider ID' },
-            { key: 'Description', label: 'Course Description' },
-            { key: 'RichDescription', label: 'Course Description (Rich Text)' },
-            { key: 'StartDate', label: 'Start Date' },
-            { key: 'EndDate', label: 'End Date' },
-            { key: 'Scope' },
-        ]
+        outputFields: UserEnrolledEvent.outputFields
     }
 };
 
