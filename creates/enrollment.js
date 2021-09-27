@@ -1,3 +1,4 @@
+const UserEnrolledEvent = require('../lib/event-data/UserEnrolledEvent.js');
 const { fetchLink } = require('../utils/workspace.js');
 
 module.exports = {
@@ -31,83 +32,19 @@ module.exports = {
             z.console.log(JSON.stringify(bundle, null, 2));
             const response = await fetchLink('enroll_user', z, bundle);
             z.console.log(response.data);
-            const {
-                Scope,
-                Course: {
-                    Description,
-                    StartDate,
-                    EndDate,
-                    Title: CourseTitle,
-                    ProviderId,
-                    RichDescription,
-                    Id: CourseId
-                },
-                User: {
-                    Username,
-                    Email,
-                    Realname,
-                    NonI18NFirstName,
-                    NonI18NLastName,
-                } = {},
-            } = response.data;
-
-            return {
-                CourseTitle,
-                CourseId,
-                ProviderId,
-                Description,
-                RichDescription,
-                StartDate,
-                EndDate,
-                Username,
-                Realname,
-                Email,
-                NonI18NFirstName,
-                NonI18NLastName,
-                Scope,
-            };
+            return UserEnrolledEvent.transform(response.data);
         },
 
         // In cases where Zapier needs to show an example record to the user, but we are unable to get a live example
         // from the API, Zapier will fallback to this hard-coded sample. It should reflect the data structure of
         // returned records, and have obviously dummy values that we can show to any user.
-        sample: {
-            CourseId: 'tag:nextthought.com,2011-10:NTI-CourseInfo-0000000000000000000_0000000000000000000',
-            CourseTitle: 'Zapier Test Course 001',
-            ProviderId: 'ZT-001',
-            Description: 'This is the course description',
-            RichDescription: 'This is the rich course description',
-            StartDate: '2021-08-25T19:32:59Z',
-            EndDate: '2021-08-25T19:32:59Z',
-            Scope: 'Public',
-
-            // User
-            Username: 'jane.doe',
-            Email: 'student@domain.com',
-            Realname: 'Jane Doe',
-            NonI18NFirstName: 'Jane',
-            NonI18NLastName: 'Doe',
-        },
+        sample: UserEnrolledEvent.sample.output(),
 
         // If the resource can have fields that are custom on a per-user basis, define a function to fetch the custom
         // field definitions. The result will be used to augment the sample.
         // outputFields: () => { return []; }
         // Alternatively, a static field definition should be provided, to specify labels for the fields
-        outputFields: [
-            { key: 'Username' },
-            { key: 'Email' },
-            { key: 'Realname', label: 'Real Name' },
-            { key: 'NonI18NFirstName', label: 'First Name' },
-            { key: 'NonI18NLastName', label: 'Last Name' },
-            { key: 'CourseTitle', label: 'Course Title' },
-            { key: 'CourseId', label: 'Course ID' },
-            { key: 'ProviderId', label: 'Course Provider ID' },
-            { key: 'Description', label: 'Course Description' },
-            { key: 'RichDescription', label: 'Course Description (Rich Text)' },
-            { key: 'StartDate', label: 'Start Date' },
-            { key: 'EndDate', label: 'End Date' },
-            { key: 'Scope' },
-        ]
+        outputFields: UserEnrolledEvent.outputFields
     },
 };
 
